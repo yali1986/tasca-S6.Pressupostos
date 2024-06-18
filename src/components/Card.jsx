@@ -1,5 +1,5 @@
 
-export default function Card({title="", description="", price=0, check, moneda="€"}) {
+export default function Card({ title = "", description = "", price = 0, checked = false, onCheckChange, moneda= "€"}) {
     return (
         <>
             <div className="container-fluid col-8">
@@ -12,19 +12,23 @@ export default function Card({title="", description="", price=0, check, moneda="
                         </div>
                     </div>
 
-                    <div className="col-4 d-flex justify-content-center">                        
-                            <div className="card-title fw-bolder mx-1"> { price } </div> 
-                            <div>{ moneda }</div>                     
+                    <div className="col-4 d-flex justify-content-center">
+                        <div className="card-title fw-bolder mx-1"> {price} </div>
+                        <div>{moneda}</div>
                     </div>
 
-                    <div className="col-4 d-flex justify-content-end">                     
-                         <div className="card-text"> {check} </div>                      
-                    </div>
+                    <div className="col-4 d-flex justify-content-end">
+                        <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={onCheckChange}
+                            aria-label={"Afegir"}
+                        />
 
+                    </div>
 
 
                 </div>
-                
             </div>
         </>
     )
