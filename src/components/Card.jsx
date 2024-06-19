@@ -21,10 +21,10 @@ export default function Card({ title = "", description = "", price = 0, checked 
                         <input
                             type="checkbox"
                             checked={checked}
-                            onChange={onCheckChange}
-                            aria-label={"Afegir"}
+                            onChange={onCheckChange} 
+                            value={price}                                                   
                         />
-
+                      <span className="ms-2">Afegir</span>
                     </div>
 
 
