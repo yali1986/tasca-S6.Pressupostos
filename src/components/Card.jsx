@@ -1,5 +1,5 @@
 
-export default function Card({ title = "", description = "", price = 0, checked = false, onCheckChange, moneda= "€"}) {
+export default function Card({ title = "", description = "", price = 0, checked = false, onCheckChange, moneda= "€", extraContent = null}) {
     return (
         <>
             <div className="container-fluid col-8">
@@ -25,8 +25,9 @@ export default function Card({ title = "", description = "", price = 0, checked 
                             value={price}                                                   
                         />
                       <span className="ms-2">Afegir</span>
-                    </div>
-
+                    </div>                    
+              
+                {extraContent && <div className="mt-3">{extraContent}</div>}
 
                 </div>
             </div>

@@ -1,10 +1,9 @@
 import { useState, useEffect} from 'react'
-
 import './App.css'
-
 import Header from './components/Header.jsx'
 import opciones from './data/data.js'
 import Card from './components/Card.jsx'
+import Pages_and_Lenguages from './components/Pages_and_Lenguages.jsx'
 
 
 function App() {
@@ -43,20 +42,29 @@ function App() {
     price={op.price} 
     moneda="€" 
     checked={checkedState[op.title]} 
-    onCheckChange={() => handleCheckChange(op.title)} aria-label={"Afegir"}/>
-  })
+    onCheckChange={() => handleCheckChange(op.title)} aria-label={"Afegir"}
+    extraContent={op.title === "Web" && checkedState[op.title] && <Pages_and_Lenguages />}
+    />
+   
+})
 
+ 
+    
+    
+   
 
   return (
     <>
       <Header />
       <div>{opcionesList} </div>
-      <div className='d-flex justify-content-center'>
+      <div className='d-flex justify-content-center'>      
         <div className="row w-75 p-4 m-5 d-flex justify-content-end align-items-end">
           <h2 className='col d-flex justify-content-end pe-0'>Preu pressuposat: {totalPresupuesto} </h2>
           <h5 className='col-1 d-flex justify-content-start p-1'>€</h5>
         </div>
       </div>
+   
+      {/* {checkedState["Web"] && <Pages_and_Lenguages />} */}
     </>
   )
 }
