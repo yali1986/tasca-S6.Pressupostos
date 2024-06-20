@@ -19,6 +19,11 @@ function App() {
 
   const [totalPresupuesto, setTotalPresupuesto] = useState(0)
 
+  const [counters, setCounters] = useState({
+    pages: 0,
+    languages: 0
+  })
+
   const handleCheckChange = (title) => {
     setCheckedState((prevState) => ({
       ...prevState,
@@ -26,12 +31,21 @@ function App() {
     }))
   }
 
+  const handleCounterChange = (type, value) => {
+    setCounters((prevCounters) => ({
+      ...prevCounters,
+      [type]: Math.max(0, prevCounters[type] + value)
+    }))
+  }
+
   useEffect(() => {
     const newTotal = opciones.reduce((acc, op) => {
       return checkedState[op.title] ? acc + op.price : acc
     }, 0)
-    setTotalPresupuesto(newTotal)
-  }, [checkedState])
+
+    const newTotalWithPagesAndLanguages = newTotal + (counters.pages + counters.languages) * 30
+    setTotalPresupuesto(newTotalWithPagesAndLanguages)
+  }, [checkedState, counters])
 
 
   const opcionesList = opciones.map(op => {
@@ -42,14 +56,19 @@ function App() {
     price={op.price} 
     moneda="€" 
     checked={checkedState[op.title]} 
-    onCheckChange={() => handleCheckChange(op.title)} aria-label={"Afegir"}
-    extraContent={op.title === "Web" && checkedState[op.title] && <Pages_and_Lenguages />}
+
+    onCheckChange={() => handleCheckChange(op.title)} 
+    highlight={op.title === "Web" && checkedState[op.title]}
+    extraContent={op.title === "Web" && checkedState[op.title]  && (
+        <Pages_and_Lenguages
+          pages={counters.pages}
+          languages={counters.languages}
+          onCounterChange={handleCounterChange}
+        />
+        )}
     />
    
-})
-
- 
-    
+})   
     
    
 
@@ -57,15 +76,15 @@ function App() {
     <>
       <Header />
       <div>{opcionesList} </div>
-      <div className='d-flex justify-content-center'>      
-        <div className="row w-75 p-4 m-5 d-flex justify-content-end align-items-end">
-          <h2 className='col d-flex justify-content-end pe-0'>Preu pressuposat: {totalPresupuesto} </h2>
-          <h5 className='col-1 d-flex justify-content-start p-1'>€</h5>
+      <div className='d-flex justify-content-center text-center'>      
+        <div className="row w-75 m-4 d-flex align-items-end">
+          <h4 className='col-12 col-md-8 d-flex justify-content-center justify-content-md-end pe-0'>Preu pressuposat:  </h4>
+          <h4 className='col-6 col-md-2 d-flex justify-content-end'>{totalPresupuesto}</h4>
+          <h5 className='col-6 col-md-2 d-flex justify-content-start'>€</h5>
         </div>
       </div>
    
-      {/* {checkedState["Web"] && <Pages_and_Lenguages />} */}
-    </>
+       </>
   )
 }
 

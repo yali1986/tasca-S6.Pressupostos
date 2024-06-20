@@ -1,23 +1,25 @@
 
-export default function Card({ title = "", description = "", price = 0, checked = false, onCheckChange, moneda= "€", extraContent = null}) {
+export default function Card({ title = "", description = "", price = 0, checked = false, onCheckChange, highlight = false, moneda= "€", extraContent = null}) {
     return (
         <>
+        
             <div className="container-fluid col-8">
-
-                <div className="row align-items-center shadow bg-body-tertiary rounded p-4 m-3">
-                    <div className="col-4">
+            
+            <div className={`row align-items-center shadow bg-body-tertiary rounded p-4 m-3 ${highlight ? "border border-success" : ""}`}> 
+                
+                    <div className="col-12 col-md-8 text-center text-md-start">
                         <div className="card-body">
                             <div className="card-title fw-bold">{title}</div>
-                            <div className="card-text fw-medium fs-6 text"> {description} </div>
+                            <div className="card-text fw-medium fs-6 mb-2"> {description} </div>
                         </div>
                     </div>
 
-                    <div className="col-4 d-flex justify-content-center">
-                        <div className="card-title fw-bolder mx-1"> {price} </div>
+                    <div className="col-12 col-md-2 d-flex justify-content-center">
+                        <div className="card-title fw-bolder mb-2"> {price} </div>
                         <div>{moneda}</div>
                     </div>
 
-                    <div className="col-4 d-flex justify-content-end">
+                    <div className="col-12 col-md-2 d-flex justify-content-center">
                         <input
                             type="checkbox"
                             checked={checked}
@@ -29,7 +31,8 @@ export default function Card({ title = "", description = "", price = 0, checked 
               
                 {extraContent && <div className="mt-3">{extraContent}</div>}
 
-                </div>
+                
+            </div>
             </div>
         </>
     )
