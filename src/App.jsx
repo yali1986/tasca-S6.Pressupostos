@@ -7,6 +7,7 @@ import Card from './components/Card.jsx'
 import Pages_and_Lenguages from './components/Pages_and_Lenguages.jsx'
 import Home from './components/Home.jsx'
 import NavButton from './components/NavButton.jsx'
+import NotFound from './components/NotFound.jsx'
 
 
 
@@ -96,6 +97,7 @@ return (
         
         </>
       } />
+<Route path='*' element={<NotFound />}></Route>
     </Routes>
   </BrowserRouter>
 );
