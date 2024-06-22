@@ -3,7 +3,7 @@ export default function Card({ title = "", description = "", price = 0, checked 
     return (
         <>
         
-            <div className="container-fluid col-8">
+            <div className="container-fluid col-8">            
             
             <div className={`row align-items-center shadow bg-body-tertiary rounded p-4 m-3 ${highlight ? "border border-success" : ""}`}> 
                 
