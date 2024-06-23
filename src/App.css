@@ -18,8 +18,9 @@
     min-width: 2rem !important;        
     min-height: 2rem !important; 
     padding: 0.5rem;
-    margin-left: 0.4rem;
+    margin-left: 0.4rem;    
     margin-right: 0.4rem;
+    text-align: center;
 }
 
 .btn-info{
@@ -27,6 +28,5 @@
     border: 2px solid #FDBCEB;
 }
 .btn-info:hover{
-    background-color: #FDBCEB;
-   
+    background-color: #FDBCEB;   
 }
