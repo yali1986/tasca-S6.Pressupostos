@@ -8,6 +8,8 @@ import Pages_and_Lenguages from './components/Pages_and_Lenguages.jsx'
 import Home from './components/Home.jsx'
 import NavButton from './components/NavButton.jsx'
 import NotFound from './components/NotFound.jsx'
+import CardForm from './components/CardForm.jsx'
+import BudgetList from './components/BudgetList.jsx'
 
 
 
@@ -29,6 +31,8 @@ function App() {
     languages: 0
   })
 
+const [presupuestos, setPresupuestos] = useState([])
+
   const handleCheckChange = (title) => {
     setCheckedState((prevState) => ({
       ...prevState,
@@ -43,6 +47,10 @@ function App() {
     }))
   }
 
+  const isAnyServiceSelected = () => {
+    return Object.values(checkedState).some(isChecked => isChecked)
+  }
+
   useEffect(() => {
     const newTotal = opciones.reduce((acc, op) => {
       return checkedState[op.title] ? acc + op.price : acc
@@ -52,9 +60,44 @@ function App() {
     setTotalPresupuesto(newTotalWithPagesAndLanguages)
   }, [checkedState, counters])
 
+  const handleSaveBudget = (budgetInfo) => {
+    if (!isAnyServiceSelected()) {   
+        alert("És obligatori afegir almenys un servei.")
+        return
+      }
+   
+    const selectedServices = opciones.filter(op=> checkedState[op.title]).map(op => {
+      if (op.title === "Web") {
+        return {
+          ...op, pages: counters.pages, languages: counters.languages }
+      }
+      return op
+    })
+
+    const newBudget = {   
+      id: new Date().getTime(),    
+      clientName: budgetInfo.clientName,
+      budgetPhone: budgetInfo.budgetPhone,
+      budgetEmail: budgetInfo.budgetEmail,
+      total: totalPresupuesto,
+      services: selectedServices
+    }
+
+    setPresupuestos([...presupuestos, newBudget])
+
+    const initialCheckedState = {}
+    opciones.forEach(op => initialCheckedState[op.title] = false)
   
+    setCheckedState(initialCheckedState)
+    setCounters({ pages: 0, languages: 0 })
+  }
+
+
+
+
   const opcionesList = opciones.map(op => {
-    return <Card 
+    return (
+    <Card 
     key={op.title} 
     title={op.title} 
     description={op.description} 
@@ -71,7 +114,7 @@ function App() {
         />
         )}
     />
-   
+   ) 
 })      
    
 
@@ -84,7 +127,7 @@ return (
       <Route path="/index" element={
         <>
           <div className='text-center'>
-          <NavLink class to="/"><NavButton  buttonName="Tornar a Inici"/></NavLink>
+          <NavLink to="/"><NavButton  buttonName="Tornar a Inici"/></NavLink>
           </div>
           <div>{opcionesList}</div>
           <div className='d-flex justify-content-center text-center'>
@@ -94,13 +137,16 @@ return (
               <h5 className='col-6 col-md-2 d-flex justify-content-start'>€</h5>
             </div>
           </div>
-        
+          <CardForm onSaveBudget={handleSaveBudget} isAnyServiceSelected={isAnyServiceSelected}/>
+          <BudgetList presupuestos={presupuestos} />
         </>
+
+        
       } />
 <Route path='*' element={<NotFound />}></Route>
     </Routes>
   </BrowserRouter>
-);
+)
 }
 
 export default App
