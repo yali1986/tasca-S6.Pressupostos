@@ -1,9 +1,16 @@
 
-export default function BudgetList({ presupuestos }) {
+export default function BudgetList({ presupuestos, onSortAlphabetically, onSortByDate, onResetOrder }) {
 
   return (
     <div className="container-fluid col-8">
       <h4 className="ms-4 m-5">Pressupostos en curs:</h4>
+
+      <div className="d-flex justify-content-between mb-4">
+        <button className="btn btn-outline-primary" onClick={onSortAlphabetically}>Ordenar Alfabéticamente</button>
+        <button className="btn btn-outline-primary" onClick={onSortByDate}>Ordenar por Fecha</button>
+        <button className="btn btn-outline-primary" onClick={onResetOrder}>Reiniciar Orden</button>
+      </div>
+
 
       {presupuestos.length === 0 ? (
         <div className="card-body g-3 mb-5">
@@ -13,7 +20,7 @@ export default function BudgetList({ presupuestos }) {
         </div>
       ) : (
         presupuestos.map(presupuesto => (
-          <div key={presupuesto.id} className="card-body m-3 pb-1">
+          <div className="card-body m-3 pb-1" key={presupuesto.id}>
             <div className="align-items-center shadow bg-body-tertiary rounded pe-4 ps-5 mb-4">
               <div className="col-12 col-md-12 text-center text-md-start">
 

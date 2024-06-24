@@ -33,6 +33,7 @@ function App() {
   })
 
 const [presupuestos, setPresupuestos] = useState([])
+const [originalPresupuestos, setOriginalPresupuestos] = useState([])
 
   const handleCheckChange = (title) => {
     setCheckedState((prevState) => ({
@@ -76,24 +77,29 @@ const [presupuestos, setPresupuestos] = useState([])
     })
 
     const newBudget = {   
-      id: new Date().getTime(),    
+      id: `${budgetInfo.clientName}-${Date.now()}`,    
       clientName: budgetInfo.clientName,
       budgetPhone: budgetInfo.budgetPhone,
       budgetEmail: budgetInfo.budgetEmail,
       total: totalPresupuesto,
-      services: selectedServices
+      services: selectedServices,
+      date: new Date().toISOString()
     }
 
     setPresupuestos([...presupuestos, newBudget])
+    setOriginalPresupuestos([...presupuestos, newBudget])
 
-    const initialCheckedState = {}
-    opciones.forEach(op => initialCheckedState[op.title] = false)
+
+    // const initialCheckedState = {}
+    // opciones.forEach(op => initialCheckedState[op.title] = false)
   
-    setCheckedState(initialCheckedState)
+    // setCheckedState(initialCheckedState)
+    // setCounters({ pages: 0, languages: 0 })
+    
+    setCheckedState(Object.keys(checkedState).reduce((acc, key) => ({ ...acc, [key]: false }), {}));
     setCounters({ pages: 0, languages: 0 })
+    
   }
-
-
 
 
   const opcionesList = opciones.map(op => {
@@ -117,6 +123,20 @@ const [presupuestos, setPresupuestos] = useState([])
     />
    ) 
 })      
+
+const handleSortAlphabetically = () => {
+  const sortedPresupuestos = [...presupuestos].sort((a, b) => a.clientName.localeCompare(b.clientName))
+  setPresupuestos(sortedPresupuestos)
+}
+
+const handleSortByDate = () => {
+  const sortedPresupuestos = [...presupuestos].sort((a, b) => new Date(b.date) - new Date(a.date))
+  setPresupuestos(sortedPresupuestos)
+}
+
+const handleResetOrder = () => {
+  setPresupuestos(originalPresupuestos)
+}
    
 
 return (
@@ -139,11 +159,15 @@ return (
             </div>
           </div>
           <CardForm onSaveBudget={handleSaveBudget} isAnyServiceSelected={isAnyServiceSelected}/>
-          <BudgetList presupuestos={presupuestos} />
-        </>
+          <BudgetList presupuestos={presupuestos} 
+                onSortAlphabetically={handleSortAlphabetically}
+                onSortByDate={handleSortByDate}
+                onResetOrder={handleResetOrder}
 
-        
-      } />
+           />
+         </>        
+       } 
+    />
 <Route path='*' element={<NotFound />}></Route>
     </Routes>
   </BrowserRouter>
