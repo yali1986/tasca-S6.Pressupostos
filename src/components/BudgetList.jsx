@@ -1,5 +1,5 @@
 
-export default function BudgetList({ presupuestos, onSortAlphabetically, onSortByDate, onResetOrder }) {
+export default function BudgetList({ presupuestos, onSortAlphabetically, onSortByDate, onResetOrder, searchTerm, setSearchTerm }) {
 
   return (
     <div className="container-fluid col-8">
@@ -11,6 +11,15 @@ export default function BudgetList({ presupuestos, onSortAlphabetically, onSortB
         <button className="btn btn-outline-primary" onClick={onResetOrder}>Reiniciar Orden</button>
       </div>
 
+      <div className="mb-4">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Buscar presupuestos por nombre"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
       {presupuestos.length === 0 ? (
         <div className="card-body g-3 mb-5">

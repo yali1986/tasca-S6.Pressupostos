@@ -34,6 +34,7 @@ function App() {
 
 const [presupuestos, setPresupuestos] = useState([])
 const [originalPresupuestos, setOriginalPresupuestos] = useState([])
+const [searchTerm, setSearchTerm] = useState("")
 
   const handleCheckChange = (title) => {
     setCheckedState((prevState) => ({
@@ -89,14 +90,8 @@ const [originalPresupuestos, setOriginalPresupuestos] = useState([])
     setPresupuestos([...presupuestos, newBudget])
     setOriginalPresupuestos([...presupuestos, newBudget])
 
-
-    // const initialCheckedState = {}
-    // opciones.forEach(op => initialCheckedState[op.title] = false)
-  
-    // setCheckedState(initialCheckedState)
-    // setCounters({ pages: 0, languages: 0 })
-    
-    setCheckedState(Object.keys(checkedState).reduce((acc, key) => ({ ...acc, [key]: false }), {}));
+ 
+    setCheckedState(Object.keys(checkedState).reduce((acc, key) => ({ ...acc, [key]: false }), {}))
     setCounters({ pages: 0, languages: 0 })
     
   }
@@ -139,6 +134,10 @@ const handleResetOrder = () => {
 }
    
 
+const filteredPresupuestos = presupuestos.filter(presupuesto =>
+  presupuesto.clientName.toLowerCase().includes(searchTerm.toLowerCase())
+)
+
 return (
   <BrowserRouter>
     <Header />   
@@ -158,12 +157,17 @@ return (
               <h5 className='col-6 col-md-2 d-flex justify-content-start'>€</h5>
             </div>
           </div>
-          <CardForm onSaveBudget={handleSaveBudget} isAnyServiceSelected={isAnyServiceSelected}/>
-          <BudgetList presupuestos={presupuestos} 
-                onSortAlphabetically={handleSortAlphabetically}
-                onSortByDate={handleSortByDate}
-                onResetOrder={handleResetOrder}
+          <CardForm 
+          onSaveBudget={handleSaveBudget} 
+          isAnyServiceSelected={isAnyServiceSelected}/>
 
+          <BudgetList 
+           presupuestos={filteredPresupuestos} 
+           onSortAlphabetically={handleSortAlphabetically}
+           onSortByDate={handleSortByDate}
+           onResetOrder={handleResetOrder}
+           searchTerm={searchTerm} 
+           setSearchTerm={setSearchTerm} 
            />
          </>        
        } 
