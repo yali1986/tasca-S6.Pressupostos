@@ -35,6 +35,7 @@ function App() {
 const [presupuestos, setPresupuestos] = useState([])
 const [originalPresupuestos, setOriginalPresupuestos] = useState([])
 const [searchTerm, setSearchTerm] = useState("")
+const [isDiscountApplied, setIsDiscountApplied] = useState(false)
 
   const handleCheckChange = (title) => {
     setCheckedState((prevState) => ({
@@ -59,9 +60,23 @@ const [searchTerm, setSearchTerm] = useState("")
       return checkedState[op.title] ? acc + op.price : acc
     }, 0)
 
-    const newTotalWithPagesAndLanguages = newTotal + (counters.pages + counters.languages) * 30
-    setTotalPresupuesto(newTotalWithPagesAndLanguages)
-  }, [checkedState, counters])
+
+
+
+    const totalBeforeDiscount = newTotal + (counters.pages + counters.languages) * 30
+    const discountedTotal = isDiscountApplied ? totalBeforeDiscount * 0.8 : totalBeforeDiscount
+
+    setTotalPresupuesto(discountedTotal)
+  }, [checkedState, counters, isDiscountApplied])
+  
+
+// const toggleDiscount = () => {
+//   setIsDiscountApplied(!isDiscountApplied)
+// }
+
+//     const newTotalWithPagesAndLanguages = newTotal + (counters.pages + counters.languages) * 30
+//     setTotalPresupuesto(newTotalWithPagesAndLanguages)
+//   }, [checkedState, counters])
 
   const handleSaveBudget = (budgetInfo) => {
     if (!isAnyServiceSelected()) {   
@@ -72,10 +87,19 @@ const [searchTerm, setSearchTerm] = useState("")
     const selectedServices = opciones.filter(op=> checkedState[op.title]).map(op => {
       if (op.title === "Web") {
         return {
-          ...op, pages: counters.pages, languages: counters.languages }
+          ...op, 
+          pages: counters.pages, 
+          languages: counters.languages }
       }
       return op
     })
+
+    const totalBeforeDiscount = opciones.reduce((acc, op) => {
+      return checkedState[op.title] ? acc + op.price : acc
+    }, 0) + (counters.pages + counters.languages) * 30
+  
+    const discountedTotal = isDiscountApplied ? totalBeforeDiscount * 0.8 : totalBeforeDiscount
+
 
     const newBudget = {   
       id: `${budgetInfo.clientName}-${Date.now()}`,    
@@ -93,8 +117,39 @@ const [searchTerm, setSearchTerm] = useState("")
  
     setCheckedState(Object.keys(checkedState).reduce((acc, key) => ({ ...acc, [key]: false }), {}))
     setCounters({ pages: 0, languages: 0 })
-    
+    setIsDiscountApplied(false)
   }
+
+
+
+
+
+
+
+
+  const toggleDiscount = () => {
+    setIsDiscountApplied(!isDiscountApplied);
+  }
+  
+
+const handleSortAlphabetically = () => {
+  const sortedPresupuestos = [...presupuestos].sort((a, b) => a.clientName.localeCompare(b.clientName))
+  setPresupuestos(sortedPresupuestos)
+}
+
+const handleSortByDate = () => {
+  const sortedPresupuestos = [...presupuestos].sort((a, b) => new Date(b.date) - new Date(a.date))
+  setPresupuestos(sortedPresupuestos)
+}
+
+const handleResetOrder = () => {
+  setPresupuestos(originalPresupuestos)
+}
+   
+
+const filteredPresupuestos = presupuestos.filter(presupuesto =>
+  presupuesto.clientName.toLowerCase().includes(searchTerm.toLowerCase())
+)
 
 
   const opcionesList = opciones.map(op => {
@@ -117,62 +172,56 @@ const [searchTerm, setSearchTerm] = useState("")
         )}
     />
    ) 
-})      
+})  
 
-const handleSortAlphabetically = () => {
-  const sortedPresupuestos = [...presupuestos].sort((a, b) => a.clientName.localeCompare(b.clientName))
-  setPresupuestos(sortedPresupuestos)
-}
 
-const handleSortByDate = () => {
-  const sortedPresupuestos = [...presupuestos].sort((a, b) => new Date(b.date) - new Date(a.date))
-  setPresupuestos(sortedPresupuestos)
-}
-
-const handleResetOrder = () => {
-  setPresupuestos(originalPresupuestos)
-}
-   
-
-const filteredPresupuestos = presupuestos.filter(presupuesto =>
-  presupuesto.clientName.toLowerCase().includes(searchTerm.toLowerCase())
-)
 
 return (
   <BrowserRouter>
-    <Header />   
-       
+    <Header />
+
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/index" element={
-        <>
-          <div className='text-center'>
-          <NavLink to="/"><NavButton  buttonName="Tornar a Inici"/></NavLink>
-          </div>
-          <div>{opcionesList}</div>
-          <div className='d-flex justify-content-center text-center'>
-            <div className="row w-75 m-4 d-flex align-items-end">
-              <h4 className='col-12 col-md-8 d-flex justify-content-center justify-content-md-end pe-0'>Preu pressuposat:</h4>
-              <h4 className='col-6 col-md-2 d-flex justify-content-end'>{totalPresupuesto}</h4>
-              <h5 className='col-6 col-md-2 d-flex justify-content-start'>€</h5>
+      <Route
+        path="/index"
+        element={
+          <>
+            <div className="text-center">
+              <NavLink to="/">
+                <NavButton buttonName="Volver a Inicio" />
+              </NavLink>
             </div>
-          </div>
-          <CardForm 
-          onSaveBudget={handleSaveBudget} 
-          isAnyServiceSelected={isAnyServiceSelected}/>
-
-          <BudgetList 
-           presupuestos={filteredPresupuestos} 
-           onSortAlphabetically={handleSortAlphabetically}
-           onSortByDate={handleSortByDate}
-           onResetOrder={handleResetOrder}
-           searchTerm={searchTerm} 
-           setSearchTerm={setSearchTerm} 
-           />
-         </>        
-       } 
-    />
-<Route path='*' element={<NotFound />}></Route>
+            <div>{opcionesList}</div>
+            <div className="d-flex justify-content-center text-center">
+              <div className="row w-75 m-4 d-flex align-items-end">
+                <h4 className='col-12 col-md-8 d-flex justify-content-center justify-content-md-end pe-0'>
+                  Precio presupuestado:
+                </h4>
+                <h4 className='col-6 col-md-2 d-flex justify-content-end'>{totalPresupuesto}</h4>
+                <h5 className='col-6 col-md-2 d-flex justify-content-start'>€</h5>
+              </div>
+            </div>
+            <div className="d-flex justify-content-center mb-4">
+              <button 
+                className={`btn ${isDiscountApplied ? "btn-success" : "btn-outline-primary"}`} 
+                onClick={toggleDiscount}
+              >
+                {isDiscountApplied ? "Descompte aplicat (-20%)" : "Aplicar descompte anual"}
+              </button>
+            </div>
+            <CardForm onSaveBudget={handleSaveBudget} isAnyServiceSelected={isAnyServiceSelected} />
+            <BudgetList
+              presupuestos={filteredPresupuestos} 
+              onSortAlphabetically={handleSortAlphabetically}
+              onSortByDate={handleSortByDate}
+              onResetOrder={handleResetOrder}
+              searchTerm={searchTerm} 
+              setSearchTerm={setSearchTerm} 
+            />
+          </>
+        }
+      />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   </BrowserRouter>
 )
