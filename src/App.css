@@ -24,9 +24,16 @@
 }
 
 .btn-info{
-    background-color: #67FCE8;
+    background-color: whitesmoke;
     border: 2px solid #FDBCEB;
 }
 .btn-info:hover{
     background-color: #FDBCEB;   
+}
+
+.form-check-input{
+    background-color:  #FDBCEB !important;
+    scale: 1.8;    
+    border-color: black !important;
+    box-shadow: none !important;   
 }

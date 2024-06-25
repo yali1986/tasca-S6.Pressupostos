@@ -6,9 +6,9 @@ export default function BudgetList({ presupuestos, onSortAlphabetically, onSortB
       <h4 className="ms-4 m-5">Pressupostos en curs:</h4>
 
       <div className="d-flex justify-content-between mb-4">
-        <button className="btn btn-outline-primary" onClick={onSortAlphabetically}>Ordenar Alfabéticamente</button>
-        <button className="btn btn-outline-primary" onClick={onSortByDate}>Ordenar por Fecha</button>
-        <button className="btn btn-outline-primary" onClick={onResetOrder}>Reiniciar Orden</button>
+        <button className="btn btn-outline-success" onClick={onSortAlphabetically}>Ordenar Alfabéticamente</button>
+        <button className="btn btn-outline-success" onClick={onSortByDate}>Ordenar por Fecha</button>
+        <button className="btn btn-outline-success" onClick={onResetOrder}>Reiniciar Orden</button>
       </div>
 
       <div className="mb-4">
