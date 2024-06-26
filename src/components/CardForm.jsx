@@ -21,9 +21,12 @@ export default function CardForm({ onSaveBudget, isAnyServiceSelected }) {
     return (
         <div className="container-fluid col-8">
           <div className="align-items-center shadow bg-body-tertiary rounded p-4 m-3">
+            
             <div className="card-body col-12">
+
               <div className="row g-2 align-items-center"> 
-                <div className="col">
+
+                <div className="col-12 col-lg-4">
                   <label htmlFor="clientName" className="form-label visually-hidden">Nom</label>
                   <input
                     type="text"
@@ -35,7 +38,7 @@ export default function CardForm({ onSaveBudget, isAnyServiceSelected }) {
                   />
                 </div>
     
-                <div className="col">
+                <div className="col-12 col-lg-4">
                   <label htmlFor="budgetPhone" className="form-label visually-hidden">Telèfon</label>
                   <input
                     type="text"
@@ -47,7 +50,7 @@ export default function CardForm({ onSaveBudget, isAnyServiceSelected }) {
                   />
                 </div>
     
-                <div className="col">
+                <div className="col-12 col-lg-4">
                   <label htmlFor="budgetEmail" className="form-label visually-hidden">Email</label>
                   <input
                     type="text"

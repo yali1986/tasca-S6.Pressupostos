@@ -5,16 +5,16 @@ export default function BudgetList({ presupuestos, onSortAlphabetically, onSortB
     <div className="container-fluid col-8">
       <h4 className="ms-4 m-5">Pressupostos en curs:</h4>
 
-      <div className="d-flex justify-content-between mb-4">
-        <button className="btn btn-outline-success" onClick={onSortAlphabetically}>Ordenar Alfabéticamente</button>
-        <button className="btn btn-outline-success" onClick={onSortByDate}>Ordenar por Fecha</button>
-        <button className="btn btn-outline-success" onClick={onResetOrder}>Reiniciar Orden</button>
+      <div className="row mb-4 d-flex justify-content-center">
+        <button className="btn btn-outline-success col-12 col-sm-4 col-lg-3 m-2" onClick={onSortAlphabetically}>Ordenar Alfabéticamente</button>
+        <button className="btn btn-outline-success col-12 col-sm-3 col-lg-2 m-2" onClick={onSortByDate}>Ordenar por Fecha</button>
+        <button className="btn btn-outline-success col-12 col-sm-3 col-lg-2 m-2" onClick={onResetOrder}>Reiniciar Orden</button>
       </div>
 
       <div className="mb-4">
         <input
           type="text"
-          className="form-control"
+          className="form-control inputResponsive"
           placeholder="Buscar presupuestos por nombre"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -24,7 +24,7 @@ export default function BudgetList({ presupuestos, onSortAlphabetically, onSortB
       {presupuestos.length === 0 ? (
         <div className="card-body g-3 mb-5">
           <div className="align-items-center shadow bg-body-tertiary rounded pe-4 ps-5 mb-4">
-            <p className="card-text ms-0 m-3 p-3">No hi ha pressupostos desats.</p>
+            <p className="card-text ms-0 m-3 p-3 text-center text-sm-start">No hi ha pressupostos desats.</p>
           </div>
         </div>
       ) : (

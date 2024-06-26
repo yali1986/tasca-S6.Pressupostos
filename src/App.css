@@ -32,8 +32,28 @@
 }
 
 .form-check-input{
-    background-color:  #FDBCEB !important;
+    background-color: #FDBCEB !important;
     scale: 1.8;    
     border-color: black !important;
-    box-shadow: none !important;   
+    box-shadow: none !important;  
 }
+
+
+@media (max-width: 425px) {
+     .inputResponsive {
+      height: auto;
+      padding: auto;
+      font-size: 11px;
+    
+    }
+  }
+@media (min-width: 375px) {
+     .inputResponsive {
+      padding-left: 35px;
+    }
+  }
+@media (min-width: 575px) {
+     .inputResponsive {
+      padding-left: 65px;
+    }
+  }

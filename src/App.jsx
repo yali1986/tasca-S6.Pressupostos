@@ -56,13 +56,20 @@ function App() {
   useEffect(() => {
     const newTotal = opciones.reduce((acc, op) => {
       const opPrice = isDiscountApplied ? op.price * 0.8 : op.price
+      if (op.title === 'Web' && checkedState[op.title]) {
+        const additionalCost = (counters.pages + counters.languages) * 30
+        return acc + opPrice + additionalCost
+      }
       return checkedState[op.title] ? acc + opPrice : acc
     }, 0)
 
-
-    const totalWithPagesAndLanguages = newTotal + (counters.pages + counters.languages) * 30
-    setTotalPresupuesto(totalWithPagesAndLanguages)
+    setTotalPresupuesto(newTotal);
   }, [checkedState, counters, isDiscountApplied])
+
+
+  //   const totalWithPagesAndLanguages = newTotal + (counters.pages + counters.languages) * 30
+  //   setTotalPresupuesto(newTotal)
+  // }, [checkedState, counters, isDiscountApplied])
 
   const handleSaveBudget = (budgetInfo) => {
     if (!isAnyServiceSelected()) {
@@ -130,13 +137,16 @@ function App() {
 
 
   const opcionesList = opciones.map(op => {
-    const discountedPrice = isDiscountApplied ? op.price * 0.8 : op.price
+    const basePrice = isDiscountApplied ? op.price * 0.8 : op.price
+    const additionalCost = (op.title === 'Web' && checkedState[op.title]) ? (counters.pages + counters.languages) * 30 : 0;
+    const finalPrice = basePrice + additionalCost
+
     return (
       <Card
         key={op.title}
         title={op.title}
         description={op.description}
-        price={discountedPrice}
+        price={finalPrice}
         moneda="€"
         checked={checkedState[op.title]}
         onCheckChange={() => handleCheckChange(op.title)}
